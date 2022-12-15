@@ -4,6 +4,10 @@ import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -87,12 +91,18 @@ class MainActivity : ComponentActivity() {
                         }
                         Row(
                             modifier = Modifier
-                                .fillMaxHeight(if(headerState.value) 0.86f else 0.95f)
+                                .fillMaxHeight(if (headerState.value) 0.86f else 0.95f)
                                 .fillMaxWidth()
                                 .padding(12.dp),
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            if(selectedItemsCount.value > 0) ContinueButtonComponent("Продолжить")
+                            AnimatedVisibility(
+                                visible = selectedItemsCount.value > 0,
+                                enter = fadeIn() + slideInHorizontally()
+                            ) {
+                                ContinueButtonComponent("Продолжить")
+
+                            }
                         }
                     }
 

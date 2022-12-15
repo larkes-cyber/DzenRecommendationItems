@@ -1,16 +1,16 @@
 package com.example.vkcupfirststep.component
 
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.runtime.*
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
@@ -28,8 +28,19 @@ fun DzenItemComponent(title:String, changeCount:(Int) -> Unit) {
         mutableStateOf(false)
     }
 
+    val transition = updateTransition(
+        targetState = selectState.value,
+        label = ""
+    )
+    val color by transition.animateColor(
+        transitionSpec = { tween(300) },
+        label = "",
+        targetValueByState = { isSelect ->
+            if(isSelect) SelectedItemColor else CardColor
+        }
+    )
     Card(
-        backgroundColor = if(selectState.value) SelectedItemColor else CardColor,
+        backgroundColor = color,
         shape = RoundedCornerShape(12.dp),
         onClick = {
             changeCount(if(selectState.value) -1 else 1)
