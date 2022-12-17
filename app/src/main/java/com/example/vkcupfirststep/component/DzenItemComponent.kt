@@ -1,6 +1,8 @@
 package com.example.vkcupfirststep.component
 
 import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.*
@@ -12,6 +14,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.*
 
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -39,6 +42,18 @@ fun DzenItemComponent(title:String, changeCount:(Int) -> Unit) {
             if(isSelect) SelectedItemColor else CardColor
         }
     )
+
+    val rotatePlus by transition.animateFloat(
+        transitionSpec = { tween(
+            durationMillis = 500,
+            easing = FastOutLinearInEasing
+            ) },
+        label = "",
+        targetValueByState = {isSelect ->
+                if(isSelect) 360f else 0f
+        }
+    )
+
     Card(
         backgroundColor = color,
         shape = RoundedCornerShape(12.dp),
@@ -74,10 +89,10 @@ fun DzenItemComponent(title:String, changeCount:(Int) -> Unit) {
             Spacer(Modifier.width(6.dp))
 
                 Icon(
-                    imageVector = if(selectState.value) Icons.Default.Check else Icons.Default.Add,
+                    imageVector = if(rotatePlus > 320f) Icons.Default.Check else Icons.Default.Add,
                     contentDescription = "",
                     tint = Color.White,
-                    modifier = Modifier.size(if(selectState.value) 25.dp else 24.dp)
+                    modifier = Modifier.size(if(selectState.value) 25.dp else 24.dp).rotate(rotatePlus)
                 )
 
         }
