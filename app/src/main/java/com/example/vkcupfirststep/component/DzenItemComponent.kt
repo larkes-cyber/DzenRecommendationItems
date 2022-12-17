@@ -45,7 +45,7 @@ fun DzenItemComponent(title:String, changeCount:(Int) -> Unit) {
 
     val rotatePlus by transition.animateFloat(
         transitionSpec = { tween(
-            durationMillis = 500,
+            durationMillis = 400,
             easing = FastOutLinearInEasing
             ) },
         label = "",
